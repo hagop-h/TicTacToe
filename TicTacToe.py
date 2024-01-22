@@ -2,8 +2,7 @@ import random
 import time
 
 class TicTacToe:
-
-
+    
     def __init__(self):
         """
         Initialise un objet TicTacToe avec un plateau de jeu vide, les joueurs,
@@ -124,7 +123,7 @@ class TicTacToe:
                         self.board[i][j] = self.ai_player
                         # Évalue le score résultant en appelant récursivement minimax pour le joueur humain
                         eval = self.minimax(depth + 1, False)
-                        # Annule le coup (redo)
+                        # Annule le coup 
                         self.board[i][j] = ' '
                         # Met à jour le maximum des scores évalués
                         max_eval = max(max_eval, eval)
@@ -141,7 +140,7 @@ class TicTacToe:
                         self.board[i][j] = self.human_player
                         # Évalue le score résultant en appelant récursivement minimax pour l'IA
                         eval = self.minimax(depth + 1, True)
-                        # Annule le coup (redo)
+                        # Annule le coup 
                         self.board[i][j] = ' '
                         # Met à jour le minimum des scores évalués
                         min_eval = min(min_eval, eval)
@@ -213,7 +212,7 @@ class TicTacToe:
                 row, col = self.get_human_move()
             else:
                 print(f"{self.current_player}'s turn:")
-                time.sleep(1)  # Une pause :D
+                time.sleep(1)  # Une pause 
                 if self.ai_difficulty == 3:  # IA difficile
                     print("AI is thinking...")
                     row, col = self.find_best_move()
