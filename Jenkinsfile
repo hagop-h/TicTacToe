@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout code from your Git repository
-                git 'https://github.com/yourusername/your-repo.git'
+                git 'https://github.com/hagop-h/TicTacToe.git'
             }
         }
         
