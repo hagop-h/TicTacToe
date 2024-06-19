@@ -13,8 +13,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build your Docker image
-                    docker.build('tictactoe-app')
+                    // Build your Docker image using Dockerfile
+                    docker.build("tictactoe-app", "-f Dockerfile .")
                 }
             }
         }
@@ -29,5 +29,4 @@ pipeline {
         }
     }
     
-    // Add more stages as needed for testing, deployment, etc.
 }
