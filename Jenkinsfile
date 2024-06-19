@@ -14,7 +14,12 @@ pipeline {
             steps {
                 script {
                     // Build your Docker image using Dockerfile
-                    docker.build("tictactoe-app", "-f Dockerfile .")
+                    try {
+                        docker.build("tictactoe-app", "-f Dockerfile .")
+                    } catch (Exception e) {
+                        println("Error building Docker image: ${e.message}")
+                        throw e
+                    }
                 }
             }
         }
@@ -23,10 +28,19 @@ pipeline {
             steps {
                 script {
                     // Run Docker container interactively with TTY support
-                    sh 'docker run --rm -it tictactoe-app'
+                    try {
+                        sh 'docker run --rm -it tictactoe-app'
+                    } catch (Exception e) {
+                        println("Error running Docker container: ${e.message}")
+                        throw e
+                    }
                 }
             }
         }
     }
     
+    options {
+        // Enable parallel execution of stages if applicable
+        parallelsAlwaysFailFast()
+    }
 }
