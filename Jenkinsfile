@@ -1,21 +1,32 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:19.03-dind'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
+    
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/hagop-h/TicTacToe.git'
+                // Checkout code from your Git repository
+                git 'https://github.com/yourusername/your-repo.git'
             }
         }
-        stage('Run Script') {
+        
+        stage('Build Docker Image') {
             steps {
-                sh 'docker pull python:3.9'
-                sh 'docker run python:3.9 python TicTacToe.py'
+                script {
+                    // Build your Docker image
+                    docker.build('tictactoe-app')
+                }
+            }
+        }
+        
+        stage('Run TicTacToe') {
+            steps {
+                script {
+                    // Run Docker container interactively with TTY support
+                    sh 'docker run --rm -it tictactoe-app'
+                }
             }
         }
     }
+    
+    // Add more stages as needed for testing, deployment, etc.
 }
