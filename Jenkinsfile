@@ -1,10 +1,10 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.9' // Use an official Python Docker image
+            image 'docker:19.03-dind'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -13,7 +13,8 @@ pipeline {
         }
         stage('Run Script') {
             steps {
-                sh 'python TicTacToe.py'
+                sh 'docker pull python:3.9'
+                sh 'docker run python:3.9 python TicTacToe.py'
             }
         }
     }
