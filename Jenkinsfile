@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Build your Docker image
-                    docker.build('tictactoe-app')
+                    docker.build('Dockerfile')
                 }
             }
         }
