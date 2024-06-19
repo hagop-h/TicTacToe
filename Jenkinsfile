@@ -4,8 +4,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from your Git repository
-                git 'https://github.com/hagop-h/TicTacToe.git'
+                checkout([$class: 'GitSCM',
+                          branches: [[name: 'main']],
+                          userRemoteConfigs: [[url: 'https://github.com/hagop-h/TicTacToe.git']]])
             }
         }
         
