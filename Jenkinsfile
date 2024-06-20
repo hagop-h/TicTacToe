@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    environment {
-        DOCKER_HOME = tool name: 'Docker', type: 'Tool'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
@@ -19,11 +15,8 @@ pipeline {
                 script {
                     try {
                         echo "Building Docker image..."
-                        def dockerCmd = "${DOCKER_HOME}/docker"
-                        docker.withRegistry('https://docker.mycorp.com/') {
-                            def customImage = docker.build("mycorp/tictactoe-app", "-f Dockerfile .")
-                            echo "Docker image built successfully: ${customImage.id}"
-                        }
+                        sh 'docker build -t tictactoe-app .'
+                        echo "Docker image built successfully"
                     } catch (Exception e) {
                         println("Error building Docker image: ${e.message}")
                         throw e
@@ -37,11 +30,8 @@ pipeline {
                 script {
                     try {
                         echo "Running Docker container..."
-                        def dockerCmd = "${DOCKER_HOME}/docker"
-                        def customImage = docker.image('mycorp/tictactoe-app')
-                        customImage.inside {
-                            sh 'python ./TicTacToe.py'
-                        }
+                        sh 'docker run --rm tictactoe-app'
+                        echo "Docker container executed successfully"
                     } catch (Exception e) {
                         println("Error running Docker container: ${e.message}")
                         throw e
