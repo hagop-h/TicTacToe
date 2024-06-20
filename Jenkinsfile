@@ -17,12 +17,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build your Docker image using Dockerfile
                     try {
                         echo "Building Docker image..."
                         def dockerCmd = "${DOCKER_HOME}/docker"
-                        def image = docker.build("tictactoe-app", "-f Dockerfile .", dockerfile: 'Dockerfile')
-                        echo "Docker image built successfully: ${image.id}"
+                        docker.withRegistry('https://docker.mycorp.com/') {
+                            def customImage = docker.build("mycorp/tictactoe-app", "-f Dockerfile .")
+                            echo "Docker image built successfully: ${customImage.id}"
+                        }
                     } catch (Exception e) {
                         println("Error building Docker image: ${e.message}")
                         throw e
@@ -34,10 +35,13 @@ pipeline {
         stage('Run TicTacToe') {
             steps {
                 script {
-                    // Run Docker container interactively with TTY support
                     try {
                         echo "Running Docker container..."
-                        sh 'docker run --rm tictactoe-app'
+                        def dockerCmd = "${DOCKER_HOME}/docker"
+                        def customImage = docker.image('mycorp/tictactoe-app')
+                        customImage.inside {
+                            sh 'python ./TicTacToe.py'
+                        }
                     } catch (Exception e) {
                         println("Error running Docker container: ${e.message}")
                         throw e
