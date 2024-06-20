@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    environment {
+        DOCKER_HOME = tool name: 'Docker', type: 'Tool'
+    }
+    
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +20,8 @@ pipeline {
                     // Build your Docker image using Dockerfile
                     try {
                         echo "Building Docker image..."
-                        def image = docker.build("tictactoe-app", "-f Dockerfile .")
+                        def dockerCmd = "${DOCKER_HOME}/docker"
+                        def image = docker.build("tictactoe-app", "-f Dockerfile .", dockerfile: 'Dockerfile')
                         echo "Docker image built successfully: ${image.id}"
                     } catch (Exception e) {
                         println("Error building Docker image: ${e.message}")
@@ -43,7 +48,6 @@ pipeline {
     }
     
     options {
-        // Enable parallel execution of stages if applicable
         parallelsAlwaysFailFast()
     }
 }
