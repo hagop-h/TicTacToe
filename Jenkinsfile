@@ -29,7 +29,7 @@ pipeline {
                 script {
                     // Run Docker container interactively with TTY support
                     try {
-                        sh 'docker run --rm -it tictactoe-app'
+                        sh 'docker run --rm tictactoe-app'
                     } catch (Exception e) {
                         println("Error running Docker container: ${e.message}")
                         throw e
