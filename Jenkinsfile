@@ -15,7 +15,9 @@ pipeline {
                 script {
                     // Build your Docker image using Dockerfile
                     try {
-                        docker.build("tictactoe-app", "-f Dockerfile .")
+                        echo "Building Docker image..."
+                        def image = docker.build("tictactoe-app", "-f Dockerfile .")
+                        echo "Docker image built successfully: ${image.id}"
                     } catch (Exception e) {
                         println("Error building Docker image: ${e.message}")
                         throw e
@@ -29,6 +31,7 @@ pipeline {
                 script {
                     // Run Docker container interactively with TTY support
                     try {
+                        echo "Running Docker container..."
                         sh 'docker run --rm tictactoe-app'
                     } catch (Exception e) {
                         println("Error running Docker container: ${e.message}")
